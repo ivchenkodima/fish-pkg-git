@@ -1,7 +1,3 @@
-function _current_branch
-  echo (command git symbolic-ref HEAD ^/dev/null | sed -e 's|^refs/heads/||')
-end
-
 alias g 'git'
 alias ga 'git add'
 alias gaa 'git add --all'
@@ -31,22 +27,6 @@ alias gcd 'git checkout develop'
 alias gcf 'git config --list'
 alias gcl 'git clone --recursive'
 
-function gccd -d 'Change directory to the repo after clone it'
-  set -l repo $argv[1]
-  set -l name (echo $repo | sed "s#^.*/\(.*\)\(.git\)*#\1#")
-  if [ (count $argv) -eq 2 ]
-    set name $argv[2]
-  end
-
-  gcl $repo $name
-  echo "Changing directory..."
-  cd $name
-end
-
-function gclean
-  git reset --hard
-  git clean -dfx
-end
 alias gcm 'git checkout master'
 alias gcmsg 'git commit -m'
 alias gco 'git checkout'
@@ -68,13 +48,9 @@ alias gga 'git gui citool --amend'
 alias ggpull 'git pull origin (_current_branch)'
 alias ggpush 'git push origin (_current_branch)'
 alias ggsup 'git branch --set-upstream-to=origin/(_current_branch)'
-#
+
 alias gignore 'git update-index --assume-unchanged'
 alias gignored 'git ls-files -v | grep "^[[:lower:]]"'
-function git-svn-dcommit-push
-  git svn dcommit
-  git push github master:svntrunk
-end
 
 alias gk 'gitk --all --branches'
 alias gke 'gitk --all (git log -g --pretty=format:%h)'
@@ -89,11 +65,6 @@ alias glo 'git log --oneline --decorate --color'
 alias glol="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
 alias glola="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --all"
 alias glog 'git log --oneline --decorate --color --graph'
-function glp
-  if not [ -z $argv[1] ]
-    git log --pretty=format:$argv[1]
-  end
-end
 
 alias gm 'git merge'
 alias gmom 'git merge origin/master'
@@ -103,10 +74,7 @@ alias gmum 'git merge upstream/master'
 
 alias gp 'git push'
 alias gpd 'git push --dry-run'
-function gpoat
-  git push origin --all
-  git push origin --tags
-end
+
 alias gpu 'git push upstream'
 alias gpv 'git push -v'
 
@@ -147,10 +115,7 @@ alias gsf 'git submodule foreach'
 alias gts 'git tag -s'
 
 alias gunignore 'git update-index --no-assume-unchanged'
-function gunwip
-  git log -n 1 | grep -q -c "\-\-wip\-\-"
-  git reset HEAD~1
-end
+
 alias gup 'git pull --rebase'
 alias gupv 'git pull --rebase -v'
 
